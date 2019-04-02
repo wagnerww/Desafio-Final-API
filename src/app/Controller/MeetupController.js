@@ -1,6 +1,7 @@
 const { Meetups, MeetupsTecnologias } = require('../models')
 
 class MeetupController {
+  // ---- CRUD
   async create (req, res) {
     try {
       const { tecnologias } = req.body
@@ -40,6 +41,7 @@ class MeetupController {
       res.status(400).json({ mensagem: `falha ao excluir - ${error}` })
     }
   }
+  // ---- FIM CRUD
 }
 
 module.exports = new MeetupController()

@@ -7,9 +7,17 @@ module.exports = (sequelize, DataTypes) => {
 
   Usuarios.associate = models => {
     Usuarios.belongsToMany(models.Tecnologias, {
-      through: 'UsuariosTecnologias'
+      through: models.UsuariosTecnologias,
+      foreignKey: 'id_usr'
     })
   }
+
+  /* Usuarios.associate = models => {
+    Usuarios.belongsToMany(models.Meetups, {
+      through: 'UsuariosMeetups',
+      as: 'id_meetups'
+    })
+  } */
 
   return Usuarios
 }

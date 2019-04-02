@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
       through: 'MeetupsTecnologias'
     })
     Tecnologias.belongsToMany(models.Usuarios, {
-      through: 'UsuariosTecnologias'
+      through: models.UsuariosTecnologias,
+      foreignKey: 'id_tecnologias'
     })
   }
 

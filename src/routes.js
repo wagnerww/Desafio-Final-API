@@ -24,5 +24,10 @@ routes.delete('/meetup/:id', meetupController.delete)
 routes.post('/usuarios', UsuariosController.create)
 routes.put('/usuarios/:id', UsuariosController.update)
 routes.delete('/usuarios/:id', UsuariosController.delete)
+routes.get('/usuarios/:id', UsuariosController.show)
+// ---- INSCRIÇÃO
+// routes.post('/inscricao', UsuariosController.inscricao)
+
+// ---- DASHBORDS
 
 module.exports = routes
