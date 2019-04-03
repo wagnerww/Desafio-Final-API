@@ -1,4 +1,9 @@
-const { Meetups, MeetupsTecnologias } = require('../models')
+const {
+  Meetups,
+  MeetupsTecnologias,
+  Tecnologias,
+  Usuarios
+} = require('../models')
 
 class MeetupController {
   // ---- CRUD
@@ -41,6 +46,27 @@ class MeetupController {
       res.status(400).json({ mensagem: `falha ao excluir - ${error}` })
     }
   }
+
+  async show (req, res) {
+    const { id } = req.params
+    try {
+      const meetups = await Meetups.findAll({
+        where: { id },
+        include: [
+          {
+            model: Tecnologias
+          },
+          {
+            model: Usuarios
+          }
+        ]
+      })
+      res.status(200).send(meetups)
+    } catch (error) {
+      console.log('erro', error)
+    }
+  }
+
   // ---- FIM CRUD
 }
 

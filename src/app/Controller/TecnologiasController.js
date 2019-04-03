@@ -30,6 +30,15 @@ class TecnologiasController {
       res.status(400).json({ mensagem: `falha ao excluir - ${error}` })
     }
   }
+
+  async show (req, res) {
+    try {
+      const data = await Tecnologias.findAll()
+      res.status(200).send(data)
+    } catch (error) {
+      res.status(400).json({ mensagem: `falha ao buscar os dados - ${error}` })
+    }
+  }
 }
 
 module.exports = new TecnologiasController()

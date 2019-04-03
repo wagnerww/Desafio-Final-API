@@ -17,8 +17,12 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      usrsenha: {
+      usrsenha_hash: {
         type: Sequelize.STRING,
+        allowNull: false
+      },
+      usrprimeiroacesso: {
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       created_at: {

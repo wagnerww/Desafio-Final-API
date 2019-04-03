@@ -1,33 +1,52 @@
 const express = require('express')
 const routes = express.Router()
 
+const authMiddleware = require('./app/middlewares/auth')
 const preferenciasController = require('./app/Controller/TecnologiasController')
 const meetupController = require('./app/Controller/MeetupController')
 const UsuariosController = require('./app/Controller/UsuariosController')
+const RegisterController = require('./app/Controller/RegisterController')
+const DashboardController = require('./app/Controller/DashboardController')
+const SessionController = require('./app/Controller/SessionController')
 
-routes.get('/', (req, res) => {
-  console.log('chegou')
-  res.send('tudo ok')
-})
+const baseAPISecurity = 'app'
 
+// ---- Autenticaçào
+routes.use(`/${baseAPISecurity}`, authMiddleware)
+
+// ---- ROTAS ABERTAS ---- \\
+// ---- USUARIO
+routes.post(`/usuarios`, UsuariosController.create)
+
+// ---- LOGIN
+routes.post('/signin', SessionController.store)
+
+// ---- ROTAS PRIVADAS ---- \\
 // ---- TECNOLOGIAS
-routes.post('/tecnologias', preferenciasController.create)
-routes.put('/tecnologias/:id', preferenciasController.update)
-routes.delete('/tecnologias/:id', preferenciasController.delete)
-
-// ---- MEETUPS
-routes.post('/meetup', meetupController.create)
-routes.put('/meetup/:id', meetupController.update)
-routes.delete('/meetup/:id', meetupController.delete)
+routes.post(`/${baseAPISecurity}/tecnologias`, preferenciasController.create)
+routes.put(`/${baseAPISecurity}/tecnologias/:id`, preferenciasController.update)
+routes.delete(
+  `/${baseAPISecurity}/tecnologias/:id`,
+  preferenciasController.delete
+)
+routes.get(`/${baseAPISecurity}/tecnologias`, preferenciasController.show)
 
 // ---- USUARIOS
-routes.post('/usuarios', UsuariosController.create)
-routes.put('/usuarios/:id', UsuariosController.update)
-routes.delete('/usuarios/:id', UsuariosController.delete)
-routes.get('/usuarios/:id', UsuariosController.show)
-// ---- INSCRIÇÃO
-// routes.post('/inscricao', UsuariosController.inscricao)
+routes.put(`/${baseAPISecurity}/usuarios`, UsuariosController.update)
+routes.delete(`/${baseAPISecurity}/usuarios`, UsuariosController.delete)
+routes.get(`/${baseAPISecurity}/usuarios`, UsuariosController.show)
 
-// ---- DASHBORDS
+// ---- MEETUPS
+routes.post(`/${baseAPISecurity}/meetup`, meetupController.create)
+routes.put(`/${baseAPISecurity}/meetup/:id`, meetupController.update)
+routes.delete(`/${baseAPISecurity}/meetup/:id`, meetupController.delete)
+routes.get(`/${baseAPISecurity}/meetup/:id`, meetupController.show)
+routes.get(`/${baseAPISecurity}/meetup`, meetupController.show)
+
+// ---- INSCRIÇÃO
+routes.post(`/${baseAPISecurity}/inscricao`, RegisterController.create)
+
+// ---- DASHBOARD
+routes.get(`/${baseAPISecurity}/dashboard/`, DashboardController.show)
 
 module.exports = routes

@@ -1,19 +1,9 @@
 const { Usuarios, UsuariosTecnologias, Tecnologias } = require('../models')
 
-class MeetupController {
+class UsuariosController {
   async create (req, res) {
     try {
-      const { tecnologias } = req.body
       const data = await Usuarios.create(req.body)
-
-      await tecnologias.map(tecnologia => {
-        const meetupTecnologias = {
-          id_usr: data.id,
-          id_tecnologias: tecnologia.id
-        }
-
-        UsuariosTecnologias.create(meetupTecnologias)
-      })
 
       res.status(200).send(data)
     } catch (error) {
@@ -23,9 +13,21 @@ class MeetupController {
 
   async update (req, res) {
     try {
+      const id = req.userId
+      const { tecnologias } = req.body
       const data = await Usuarios.update(req.body, {
-        where: { id: req.params.id }
+        where: { id }
       })
+
+      await tecnologias.map(tecnologia => {
+        const meetupTecnologias = {
+          id_usr: id,
+          id_tecnologias: tecnologia.id
+        }
+
+        UsuariosTecnologias.create(meetupTecnologias)
+      })
+
       res.status(200).send(data)
     } catch (error) {
       res.status(400).json({ mensagem: `falha ao editar - ${error}` })
@@ -34,7 +36,8 @@ class MeetupController {
 
   async delete (req, res) {
     try {
-      await Usuarios.destroy({ where: { id: req.params.id } })
+      const id = req.userId
+      await Usuarios.destroy({ where: { id } })
       res.status(200).json({ mensagem: 'Meetup excluído' })
     } catch (error) {
       res.status(400).json({ mensagem: `falha ao excluir - ${error}` })
@@ -42,8 +45,8 @@ class MeetupController {
   }
 
   async show (req, res) {
-    const { id } = req.params
     try {
+      const id = req.userId
       const users = await Usuarios.findAll({
         where: { id },
         include: [
@@ -59,4 +62,4 @@ class MeetupController {
   }
 }
 
-module.exports = new MeetupController()
+module.exports = new UsuariosController()
