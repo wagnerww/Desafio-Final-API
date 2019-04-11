@@ -68,7 +68,7 @@ class MeetupController {
   async show (req, res) {
     const { id } = req.params
     try {
-      const meetups = await Meetups.findAll({
+      const meetups = await Meetups.findOne({
         where: { id },
         include: [
           {
