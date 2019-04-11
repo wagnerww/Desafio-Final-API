@@ -1,5 +1,7 @@
 const express = require('express')
 const routes = express.Router()
+const multerConfig = require('./config/muter')
+const upload = require('multer')(multerConfig)
 
 const authMiddleware = require('./app/middlewares/auth')
 const preferenciasController = require('./app/Controller/TecnologiasController')
@@ -38,6 +40,11 @@ routes.get(`/${baseAPISecurity}/usuarios`, UsuariosController.show)
 
 // ---- MEETUPS
 routes.post(`/${baseAPISecurity}/meetup`, meetupController.create)
+routes.post(
+  `/${baseAPISecurity}/meetup/:id`,
+  upload.single('file'),
+  meetupController.createimage
+)
 routes.put(`/${baseAPISecurity}/meetup/:id`, meetupController.update)
 routes.delete(`/${baseAPISecurity}/meetup/:id`, meetupController.delete)
 routes.get(`/${baseAPISecurity}/meetup/:id`, meetupController.show)

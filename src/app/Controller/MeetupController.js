@@ -27,6 +27,24 @@ class MeetupController {
     }
   }
 
+  async createimage (req, res) {
+    try {
+      console.log(req.file)
+      const { filename: meetimagem } = req.file
+      console.log('img', meetimagem)
+      console.log('id', req.params.id)
+      const data = await Meetups.update(
+        { meetimagem: meetimagem },
+        {
+          where: { id: req.params.id }
+        }
+      )
+      res.status(200).send(data)
+    } catch (error) {
+      res.status(400).json({ mensagem: `falha ao cadastrar - ${error}` })
+    }
+  }
+
   async update (req, res) {
     try {
       const data = await Meetups.update(req.body, {
@@ -61,6 +79,8 @@ class MeetupController {
           }
         ]
       })
+
+      console.log('meet', meetups)
       res.status(200).send(meetups)
     } catch (error) {
       console.log('erro', error)

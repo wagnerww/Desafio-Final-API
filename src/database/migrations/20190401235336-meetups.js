@@ -19,7 +19,7 @@ module.exports = {
       },
       meetimagem: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
       meetlocalizacao: {
         type: Sequelize.STRING,

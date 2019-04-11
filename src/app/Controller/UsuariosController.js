@@ -14,12 +14,18 @@ class UsuariosController {
   async update (req, res) {
     try {
       const id = req.userId
-      const { tecnologias } = req.body
+      const { Tecnologias } = req.body
       const data = await Usuarios.update(req.body, {
         where: { id }
       })
 
-      await tecnologias.map(tecnologia => {
+      const rows = await UsuariosTecnologias.destroy({
+        where: { id_usr: id }
+      })
+
+      console.log('rows', rows)
+
+      await Tecnologias.map(tecnologia => {
         const meetupTecnologias = {
           id_usr: id,
           id_tecnologias: tecnologia.id
@@ -47,7 +53,7 @@ class UsuariosController {
   async show (req, res) {
     try {
       const id = req.userId
-      const users = await Usuarios.findAll({
+      const users = await Usuarios.findOne({
         where: { id },
         include: [
           {
