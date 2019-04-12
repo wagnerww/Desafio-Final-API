@@ -3,7 +3,15 @@ const routes = express.Router()
 const multerConfig = require('./config/muter')
 const upload = require('multer')(multerConfig)
 
+// ---- VALIDATORS
+const usuarioValidator = require('./app/validators/usuario')
+const meetupValidator = require('./app/validators/meetup')
+
+// ---- MIDDLEWARES
 const authMiddleware = require('./app/middlewares/auth')
+const validators = require('./app/middlewares/validators')
+
+// ---- CONTROLERS
 const preferenciasController = require('./app/Controller/TecnologiasController')
 const meetupController = require('./app/Controller/MeetupController')
 const UsuariosController = require('./app/Controller/UsuariosController')
@@ -18,7 +26,11 @@ routes.use(`/${baseAPISecurity}`, authMiddleware)
 
 // ---- ROTAS ABERTAS ---- \\
 // ---- USUARIO
-routes.post(`/usuarios`, UsuariosController.create)
+routes.post(
+  `/usuarios`,
+  validators(usuarioValidator.usuario),
+  UsuariosController.create
+)
 
 // ---- LOGIN
 routes.post('/signin', SessionController.store)
@@ -39,7 +51,11 @@ routes.delete(`/${baseAPISecurity}/usuarios`, UsuariosController.delete)
 routes.get(`/${baseAPISecurity}/usuarios`, UsuariosController.show)
 
 // ---- MEETUPS
-routes.post(`/${baseAPISecurity}/meetup`, meetupController.create)
+routes.post(
+  `/${baseAPISecurity}/meetup`,
+  validators(meetupValidator.meetup),
+  meetupController.create
+)
 routes.post(
   `/${baseAPISecurity}/meetup/:id`,
   upload.single('file'),
