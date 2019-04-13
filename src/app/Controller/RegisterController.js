@@ -1,4 +1,6 @@
-const { UsuariosMeetups, Meetups } = require('../models')
+const { UsuariosMeetups, Meetups, Usuarios } = require('../models')
+const Queue = require('../services/Queue')
+const InscricoesMail = require('../jobs/InscricoesMail')
 
 class RegisterController {
   async create (req, res) {
@@ -11,8 +13,11 @@ class RegisterController {
 
       // Atualiza membros
       const meetup = await Meetups.findByPk(idMeetup)
+      const user = await Usuarios.findByPk(req.userId)
       const meetqtdinscritos = meetup.meetqtdinscritos + 1
       await Meetups.update({ meetqtdinscritos }, { where: { id: idMeetup } })
+
+      Queue.create(InscricoesMail.key, { user, meetup }).save()
 
       res.status(200).send(data)
     } catch (error) {

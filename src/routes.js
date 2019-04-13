@@ -46,7 +46,11 @@ routes.delete(
 routes.get(`/${baseAPISecurity}/tecnologias`, preferenciasController.show)
 
 // ---- USUARIOS
-routes.put(`/${baseAPISecurity}/usuarios`, UsuariosController.update)
+routes.put(
+  `/${baseAPISecurity}/usuarios`,
+  validators(usuarioValidator.usuario),
+  UsuariosController.update
+)
 routes.delete(`/${baseAPISecurity}/usuarios`, UsuariosController.delete)
 routes.get(`/${baseAPISecurity}/usuarios`, UsuariosController.show)
 
