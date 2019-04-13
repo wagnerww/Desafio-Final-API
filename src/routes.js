@@ -47,6 +47,10 @@ routes.get(`/${baseAPISecurity}/tecnologias`, preferenciasController.show)
 
 // ---- USUARIOS
 routes.put(
+  `/${baseAPISecurity}/usuarios/preferencias`,
+  UsuariosController.update
+)
+routes.put(
   `/${baseAPISecurity}/usuarios`,
   validators(usuarioValidator.usuario),
   UsuariosController.update

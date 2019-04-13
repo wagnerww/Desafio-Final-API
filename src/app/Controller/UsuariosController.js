@@ -14,7 +14,7 @@ class UsuariosController {
   async update (req, res) {
     try {
       const id = req.userId
-      const { Tecnologias } = req.body
+      const { tecnologias } = req.body
       const data = await Usuarios.update(req.body, {
         where: { id }
       })
@@ -23,7 +23,7 @@ class UsuariosController {
         where: { id_usr: id }
       })
 
-      await Tecnologias.map(tecnologia => {
+      await tecnologias.map(tecnologia => {
         const meetupTecnologias = {
           id_usr: id,
           id_tecnologias: tecnologia.id

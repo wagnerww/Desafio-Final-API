@@ -7,10 +7,13 @@ module.exports = {
       .error(() => 'Título/Tema é necessário'),
     meetdescricao: Joi.string()
       .required()
-      .error(() => 'Descriçõ é necessário'),
+      .error(() => 'Descrição é necessário'),
     meetlocalizacao: Joi.string()
       .required()
       .min(4)
-      .error(() => 'Localização é necessário')
+      .error(() => 'Localização é necessário'),
+    tecnologias: Joi.array()
+      .required()
+      .error(() => 'É necessário informar as técnologias')
   })
 }
