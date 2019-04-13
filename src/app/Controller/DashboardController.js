@@ -11,16 +11,18 @@ class DashboardController {
 
       if (req.query.titulo) {
         const { titulo } = req.query
-        filtersPadrao.meettitulo = { [Op.like]: `%${titulo}%` }
-        filterProximo.meettitulo = { [Op.like]: `%${titulo}%` }
+        filtersPadrao.meettitulo = { [Op.iLike]: `%${titulo}%` }
+        filterProximo.meettitulo = { [Op.iLike]: `%${titulo}%` }
       }
       // ---- Busca as inscrições do usuário
+
       const usuario = await Usuarios.findOne({
         where: { id },
         include: [
           {
             model: Meetups,
-            where: filtersPadrao
+            where: filtersPadrao,
+            required: false
           },
           {
             model: Tecnologias
@@ -30,11 +32,10 @@ class DashboardController {
 
       // ---- Adicona as tecnologias para buscar os interesses
       let tecnologiasUser = []
-      usuario != null
-        ? await usuario.Tecnologias.map(tecnologia => {
-          tecnologiasUser.push(tecnologia.id)
-        })
-        : (tecnologiasUser = [])
+      await usuario.Tecnologias.map(tecnologia => {
+        console.log('====> entrou if')
+        tecnologiasUser.push(tecnologia.id)
+      })
 
       // ---- Adiciona os Meetups do usuário
       let meetupsUser = []

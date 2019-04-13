@@ -28,7 +28,7 @@ routes.use(`/${baseAPISecurity}`, authMiddleware)
 // ---- USUARIO
 routes.post(
   `/usuarios`,
-  validators(usuarioValidator.usuario),
+  validators(usuarioValidator()),
   UsuariosController.create
 )
 
@@ -52,7 +52,7 @@ routes.put(
 )
 routes.put(
   `/${baseAPISecurity}/usuarios`,
-  validators(usuarioValidator.usuario),
+  validators(usuarioValidator(false)),
   UsuariosController.update
 )
 routes.delete(`/${baseAPISecurity}/usuarios`, UsuariosController.delete)

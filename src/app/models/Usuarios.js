@@ -16,12 +16,10 @@ module.exports = (sequelize, DataTypes) => {
           if (usuario.usrsenha) {
             usuario.usrsenha_hash = await bcrypt.hash(usuario.usrsenha, 10)
           }
+          usuario.usrprimeiroacesso = false
         },
         beforeCreate: async usuario => {
           usuario.usrprimeiroacesso = true
-        },
-        beforeUpdate: async usuario => {
-          usuario.usrprimeiroacesso = false
         }
       }
     }

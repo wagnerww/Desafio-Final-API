@@ -3,9 +3,16 @@ const { Usuarios, UsuariosTecnologias, Tecnologias } = require('../models')
 class UsuariosController {
   async create (req, res) {
     try {
-      const data = await Usuarios.create(req.body)
+      const { usremail } = req.body
+      const userExiste = await Usuarios.findOne({ where: { usremail } })
 
-      res.status(200).send(data)
+      if (userExiste === null) {
+        const data = await Usuarios.create(req.body)
+
+        res.status(200).send(data)
+      } else {
+        res.status(400).json({ error: 'Já exise um usuário com este email' })
+      }
     } catch (error) {
       res.status(400).json({ mensagem: `falha ao cadastrar - ${error}` })
     }
@@ -15,9 +22,12 @@ class UsuariosController {
     try {
       const id = req.userId
       const { tecnologias } = req.body
-      const data = await Usuarios.update(req.body, {
-        where: { id }
-      })
+      const data = await Usuarios.update(
+        { ...req.body, usrprimeiroacesso: false },
+        {
+          where: { id }
+        }
+      )
 
       await UsuariosTecnologias.destroy({
         where: { id_usr: id }
