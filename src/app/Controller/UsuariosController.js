@@ -19,11 +19,9 @@ class UsuariosController {
         where: { id }
       })
 
-      const rows = await UsuariosTecnologias.destroy({
+      await UsuariosTecnologias.destroy({
         where: { id_usr: id }
       })
-
-      console.log('rows', rows)
 
       await Tecnologias.map(tecnologia => {
         const meetupTecnologias = {
